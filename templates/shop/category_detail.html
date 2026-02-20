@@ -1,0 +1,88 @@
+{% extends "base/base.html" %}
+
+{% block title %}{{ category.name }} - ShopStore{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Хлебные крошки -->
+    <nav class="flex items-center space-x-2 text-sm text-gray-600 mb-6">
+        <a href="{% url 'shop:home' %}" class="hover:text-primary">Главная</a>
+        <i class="bi bi-chevron-right"></i>
+        <span class="text-gray-900">{{ category.name }}</span>
+    </nav>
+    
+    <!-- Информация о категории -->
+    <div class="bg-gradient-to-r from-primary to-accent rounded-2xl shadow-lg p-8 mb-8 text-white">
+        <div class="flex flex-col md:flex-row items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold mb-2">{{ category.name }}</h1>
+                <p class="text-white/80">{{ category.description|default:"Описание категории не указано" }}</p>
+            </div>
+            {% if category.image %}
+                <img src="{{ category.image.url }}" alt="{{ category.name }}" class="w-32 h-32 object-cover rounded-xl mt-4 md:mt-0">
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Товары категории -->
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-gray-900">Товары в категории ({{ products|length }})</h2>
+    </div>
+    
+    {% if products %}
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {% for product in products %}
+        <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden">
+            {% if product.old_price %}
+            <span class="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold z-10">
+                -{{ product.get_discount_percentage }}%
+            </span>
+            {% endif %}
+            
+            <div class="relative">
+                <div class="h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                    {% if product.images.first %}
+                        <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" class="max-h-full max-w-full object-contain">
+                    {% else %}
+                        <i class="bi bi-image text-gray-400 text-6xl"></i>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="p-5">
+                <h3 class="text-lg font-bold text-gray-900">{{ product.name }}</h3>
+                <p class="text-gray-600 text-sm mt-2 line-clamp-2">{{ product.description }}</p>
+                
+                <div class="flex items-center space-x-3 mt-4">
+                    {% if product.old_price %}
+                        <span class="text-gray-400 line-through">{{ product.old_price }} ₽</span>
+                    {% endif %}
+                    <span class="text-2xl font-bold text-primary">{{ product.price }} ₽</span>
+                </div>
+                
+                {% if not product.is_in_stock %}
+                    <span class="inline-block mt-3 px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-semibold">
+                        Нет в наличии
+                    </span>
+                {% endif %}
+                
+                <div class="flex space-x-2 mt-4">
+                    <a href="{% url 'shop:product_detail' product.slug %}" class="flex-1 text-center border-2 border-primary text-primary py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                        <i class="bi bi-eye mr-1"></i>Подробнее
+                    </a>
+                    <a href="{% url 'cart:cart_add' product.id %}" class="flex-1 text-center bg-primary hover:bg-blue-600 text-white py-2 rounded-lg font-semibold transition-colors {% if not product.is_in_stock %}opacity-50 cursor-not-allowed{% endif %}">
+                        <i class="bi bi-cart-plus mr-1"></i>В корзину
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-white rounded-2xl shadow-lg p-12 text-center">
+        <i class="bi bi-inbox text-gray-400 text-6xl"></i>
+        <h3 class="text-2xl font-bold text-gray-900 mt-6">В этой категории пока нет товаров</h3>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

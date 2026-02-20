@@ -1,0 +1,146 @@
+{% extends "base/base.html" %}
+
+{% block title %}О нас - ShopStore{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Заголовок -->
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">О компании ShopStore</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Ваш надежный партнер в мире электроники и цифровой техники
+        </p>
+    </div>
+    
+    <!-- История компании -->
+    <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+        <div class="flex items-center space-x-3 mb-6">
+            <div class="bg-primary w-12 h-12 rounded-xl flex items-center justify-center">
+                <i class="bi bi-building text-white text-xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900">Наша история</h2>
+        </div>
+        
+        <div class="prose prose-gray max-w-none">
+            <p class="text-gray-700 text-lg leading-relaxed">
+                ShopStore — это современный интернет-магазин электроники, который был основан в 2020 году. 
+                За годы работы мы стали одним из лидеров в сфере онлайн-продаж цифровой техники, 
+                завоевав доверие тысяч клиентов по всей России.
+            </p>
+            <p class="text-gray-700 text-lg leading-relaxed mt-4">
+                Наша миссия — предоставлять качественную продукцию по доступным ценам, 
+                обеспечивая превосходный сервис и поддержку на каждом этапе покупки.
+            </p>
+        </div>
+    </div>
+    
+    <!-- Преимущества -->
+    <div class="bg-gradient-to-r from-primary to-accent rounded-2xl shadow-lg p-8 mb-8 text-white">
+        <h2 class="text-2xl font-bold mb-8 text-center">Почему выбирают нас</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="text-center">
+                <div class="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="bi bi-shield-check text-3xl"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Гарантия качества</h3>
+                <p class="text-white/80 text-sm">Только оригинальная продукция с официальной гарантией</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="bi bi-truck text-3xl"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Быстрая доставка</h3>
+                <p class="text-white/80 text-sm">Доставка по всей России за 1-3 дня</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="bi bi-currency-dollar text-3xl"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Выгодные цены</h3>
+                <p class="text-white/80 text-sm">Лучшие цены на рынке с регулярными скидками</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="bi bi-headset text-3xl"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Поддержка 24/7</h3>
+                <p class="text-white/80 text-sm">Наши специалисты всегда на связи</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Цифры -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
+            <div class="text-4xl font-bold text-primary mb-2">50 000+</div>
+            <div class="text-gray-600">Довольных клиентов</div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
+            <div class="text-4xl font-bold text-primary mb-2">10 000+</div>
+            <div class="text-gray-600">Товаров в каталоге</div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
+            <div class="text-4xl font-bold text-primary mb-2">5 лет</div>
+            <div class="text-gray-600">На рынке</div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
+            <div class="text-4xl font-bold text-primary mb-2">98%</div>
+            <div class="text-gray-600">Положительных отзывов</div>
+        </div>
+    </div>
+    
+    <!-- Команда -->
+    <div class="bg-white rounded-2xl shadow-lg p-8">
+        <div class="flex items-center space-x-3 mb-6">
+            <div class="bg-accent w-12 h-12 rounded-xl flex items-center justify-center">
+                <i class="bi bi-people text-white text-xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900">Наша команда</h2>
+        </div>
+        
+        <p class="text-gray-700 text-lg leading-relaxed">
+            В нашей команде работают профессионалы с многолетним опытом в сфере электроники и e-commerce. 
+            Мы постоянно совершенствуем свои навыки и следим за последними тенденциями рынка, 
+            чтобы предлагать вам только лучшее.
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+            <div class="text-center">
+                <div class="w-24 h-24 bg-gradient-to-br from-primary to-accent rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <i class="bi bi-person text-white text-4xl"></i>
+                </div>
+                <h3 class="font-bold text-gray-900">Афутин Роман</h3>
+                <p class="text-gray-600">Генеральный директор</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="w-24 h-24 bg-gradient-to-br from-primary to-accent rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <i class="bi bi-person text-white text-4xl"></i>
+                </div>
+                <h3 class="font-bold text-gray-900">Мария Иванова</h3>
+                <p class="text-gray-600">Коммерческий директор</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="w-24 h-24 bg-gradient-to-br from-primary to-accent rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <i class="bi bi-person text-white text-4xl"></i>
+                </div>
+                <h3 class="font-bold text-gray-900">Дмитрий Сидоров</h3>
+                <p class="text-gray-600">Технический директор</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CTA -->
+    <div class="mt-12 text-center">
+        <a href="{% url 'shop:home' %}" class="inline-flex items-center space-x-2 bg-primary hover:bg-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg transition-colors">
+            <i class="bi bi-shop text-xl"></i>
+            <span>Перейти в каталог</span>
+        </a>
+    </div>
+</div>
+{% endblock %}

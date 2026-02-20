@@ -1,0 +1,58 @@
+{% extends "base/base.html" %}
+
+{% block title %}Заказ оформлен - ShopStore{% endblock %}
+
+{% block content %}
+<div class="min-h-[calc(100vh-16rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl w-full">
+        <div class="bg-white rounded-2xl shadow-2xl p-12 text-center">
+            <div class="bg-green-100 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="bi bi-check-circle text-green-500 text-5xl"></i>
+            </div>
+            
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Заказ успешно оформлен!</h1>
+            <p class="text-gray-600 mb-8">Спасибо за ваш заказ. Мы свяжемся с вами в ближайшее время.</p>
+            
+            <div class="bg-gradient-to-r from-primary to-accent rounded-xl p-6 text-white mb-8">
+                <div class="text-sm opacity-80 mb-2">Номер заказа</div>
+                <div class="text-3xl font-bold">{{ order.order_number }}</div>
+                <div class="text-sm opacity-80 mt-2">{{ order.created_at|date:"d.m.Y H:i" }}</div>
+            </div>
+            
+            <div class="bg-gray-50 rounded-xl p-6 mb-8">
+                <h3 class="font-bold text-gray-900 mb-4">Информация о заказе</h3>
+                <div class="space-y-2 text-left">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Сумма:</span>
+                        <span class="font-bold text-gray-900">{{ order.total_price }} ₽</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Способ оплаты:</span>
+                        <span class="font-semibold text-gray-900">{{ order.payment.get_payment_method_display }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Статус:</span>
+                        <span class="px-3 py-1 rounded-full text-sm font-semibold
+                            {% if order.status == 'confirmed' %}bg-green-100 text-green-700
+                            {% elif order.status == 'pending' %}bg-yellow-100 text-yellow-700
+                            {% else %}bg-blue-100 text-blue-700{% endif %}">
+                            {{ order.get_status_display }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="space-y-4">
+                <a href="{% url 'orders:order_detail' order.order_number %}" class="block w-full bg-primary hover:bg-blue-600 text-white py-4 rounded-xl font-bold text-lg transition-colors flex items-center justify-center space-x-2">
+                    <i class="bi bi-eye text-xl"></i>
+                    <span>Посмотреть детали заказа</span>
+                </a>
+                <a href="{% url 'shop:home' %}" class="block w-full border-2 border-primary text-primary hover:bg-blue-50 py-4 rounded-xl font-bold text-lg transition-colors flex items-center justify-center space-x-2">
+                    <i class="bi bi-shop text-xl"></i>
+                    <span>Продолжить покупки</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

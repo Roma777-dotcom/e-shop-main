@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: shopstore
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements-prod.txt
+    startCommand: gunicorn shop_project.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: shop_project.settings
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: False
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: shopstore-db
+          property: connectionString
+      - key: ALLOWED_HOSTS
+        value: shopstore.onrender.com
+
+databases:
+  - name: shopstore-db
+    databaseName: shopstore
+    user: shopstore
+    plan: free

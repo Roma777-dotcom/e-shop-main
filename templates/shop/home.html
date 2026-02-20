@@ -1,0 +1,185 @@
+{% extends "base/base.html" %}
+
+{% block title %}Каталог товаров - ShopStore{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Боковая панель с фильтрами -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
+                <!-- Категории -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                        <i class="bi bi-list mr-2 text-primary"></i>
+                        Категории
+                    </h3>
+                    <div class="space-y-2">
+                        <a href="{% url 'shop:home' %}" class="block px-4 py-2 rounded-lg {% if not request.GET.category %}bg-primary text-white{% else %}text-gray-700 hover:bg-gray-100{% endif %} transition-colors">
+                            Все товары
+                        </a>
+                        {% for category in categories %}
+                        <a href="?category={{ category.slug }}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" 
+                           class="block px-4 py-2 rounded-lg {% if request.GET.category == category.slug %}bg-primary text-white{% else %}text-gray-700 hover:bg-gray-100{% endif %} transition-colors">
+                            {{ category.name }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <hr class="border-gray-200 my-6">
+                
+                <!-- Фильтр по цене -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                        <i class="bi bi-funnel mr-2 text-primary"></i>
+                        Фильтр по цене
+                    </h3>
+                    <form method="GET" id="priceFilterForm">
+                        {% if request.GET.category %}
+                            <input type="hidden" name="category" value="{{ request.GET.category }}">
+                        {% endif %}
+                        {% if request.GET.sort %}
+                            <input type="hidden" name="sort" value="{{ request.GET.sort }}">
+                        {% endif %}
+                        {% if request.GET.q %}
+                            <input type="hidden" name="q" value="{{ request.GET.q }}">
+                        {% endif %}
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">От:</label>
+                                {{ filter_form.min_price }}
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">До:</label>
+                                {{ filter_form.max_price }}
+                            </div>
+                            <button type="submit" class="w-full bg-primary hover:bg-blue-600 text-white py-2 rounded-lg font-semibold transition-colors">
+                                Применить
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <hr class="border-gray-200 my-6">
+                
+                <!-- Сортировка -->
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                        <i class="bi bi-sort mr-2 text-primary"></i>
+                        Сортировка
+                    </h3>
+                    <form method="GET" id="sortForm">
+                        {% if request.GET.category %}
+                            <input type="hidden" name="category" value="{{ request.GET.category }}">
+                        {% endif %}
+                        {% if request.GET.min_price %}
+                            <input type="hidden" name="min_price" value="{{ request.GET.min_price }}">
+                        {% endif %}
+                        {% if request.GET.max_price %}
+                            <input type="hidden" name="max_price" value="{{ request.GET.max_price }}">
+                        {% endif %}
+                        {% if request.GET.q %}
+                            <input type="hidden" name="q" value="{{ request.GET.q }}">
+                        {% endif %}
+                        {{ filter_form.sort }}
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Список товаров -->
+        <div class="lg:col-span-3">
+            <div class="flex items-center justify-between mb-6">
+                <h1 class="text-2xl font-bold text-gray-900">
+                    {% if current_category %}
+                        {{ current_category.name }}
+                    {% else %}
+                        Каталог товаров
+                    {% endif %}
+                </h1>
+                <span class="text-gray-600">{{ products|length }} товаров</span>
+            </div>
+            
+            {% if products %}
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {% for product in products %}
+                <div class="product-card bg-white rounded-2xl shadow-lg overflow-hidden">
+                    {% if product.old_price %}
+                    <span class="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold z-10">
+                        -{{ product.get_discount_percentage }}%
+                    </span>
+                    {% endif %}
+                    
+                    <div class="relative">
+                        <div class="h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                            {% if product.images.first %}
+                                <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" class="max-h-full max-w-full object-contain">
+                            {% else %}
+                                <i class="bi bi-image text-gray-400 text-6xl"></i>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="p-5">
+                        <span class="text-sm text-primary font-medium">{{ product.category.name }}</span>
+                        <h3 class="text-lg font-bold text-gray-900 mt-1">{{ product.name }}</h3>
+                        <p class="text-gray-600 text-sm mt-2 line-clamp-2">{{ product.description }}</p>
+                        
+                        <div class="flex items-center space-x-3 mt-4">
+                            {% if product.old_price %}
+                                <span class="text-gray-400 line-through">{{ product.old_price }} ₽</span>
+                            {% endif %}
+                            <span class="text-2xl font-bold text-primary">{{ product.price }} ₽</span>
+                        </div>
+                        
+                        {% if not product.is_in_stock %}
+                            <span class="inline-block mt-3 px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-semibold">
+                                Нет в наличии
+                            </span>
+                        {% endif %}
+                        
+                        <div class="flex space-x-2 mt-4">
+                            <a href="{% url 'shop:product_detail' product.slug %}" class="flex-1 text-center border-2 border-primary text-primary py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                                <i class="bi bi-eye mr-1"></i>Подробнее
+                            </a>
+                            <a href="{% url 'cart:cart_add' product.id %}" class="flex-1 text-center bg-primary hover:bg-blue-600 text-white py-2 rounded-lg font-semibold transition-colors {% if not product.is_in_stock %}opacity-50 cursor-not-allowed{% endif %}">
+                                <i class="bi bi-cart-plus mr-1"></i>В корзину
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="bg-white rounded-2xl shadow-lg p-12 text-center">
+                <i class="bi bi-inbox text-gray-400 text-6xl"></i>
+                <h3 class="text-2xl font-bold text-gray-900 mt-6">Товары не найдены</h3>
+                <p class="text-gray-600 mt-2">Попробуйте изменить параметры поиска или фильтры</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+    document.querySelectorAll('input').forEach(input => {
+        input.classList.add('w-full', 'px-4', 'py-2', 'border', 'border-gray-300', 'rounded-lg', 'focus:ring-2', 'focus:ring-primary', 'focus:border-transparent', 'outline-none');
+    });
+    document.querySelectorAll('select').forEach(select => {
+        select.classList.add('w-full', 'px-4', 'py-2', 'border', 'border-gray-300', 'rounded-lg', 'focus:ring-2', 'focus:ring-primary', 'focus:border-transparent', 'outline-none');
+    });
+    
+    // Автоматическая отправка формы при изменении сортировки
+    document.addEventListener('DOMContentLoaded', function() {
+        const sortSelect = document.getElementById('id_sort');
+        if (sortSelect) {
+            sortSelect.addEventListener('change', function() {
+                document.getElementById('sortForm').submit();
+            });
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %}

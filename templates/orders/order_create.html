@@ -1,0 +1,159 @@
+{% extends "base/base.html" %}
+
+{% block title %}Оформление заказа - ShopStore{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex items-center space-x-3 mb-8">
+        <div class="bg-primary w-12 h-12 rounded-xl flex items-center justify-center">
+            <i class="bi bi-clipboard-check text-white text-xl"></i>
+        </div>
+        <h1 class="text-3xl font-bold text-gray-900">Оформление заказа</h1>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Форма оформления -->
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="bi bi-truck mr-2 text-primary"></i>
+                    Данные доставки
+                </h2>
+                
+                <form method="POST" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">Имя *</label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.first_name.errors }}</p>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">Фамилия *</label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.last_name.errors }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.email.errors }}</p>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <label for="{{ form.phone.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">Телефон *</label>
+                            {{ form.phone }}
+                            {% if form.phone.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.phone.errors }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.address.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">Адрес доставки *</label>
+                        {{ form.address }}
+                        {% if form.address.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.address.errors }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="{{ form.city.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">Город *</label>
+                            {{ form.city }}
+                            {% if form.city.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.city.errors }}</p>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <label for="{{ form.postal_code.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">Почтовый индекс *</label>
+                            {{ form.postal_code }}
+                            {% if form.postal_code.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.postal_code.errors }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.payment_method.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">Способ оплаты *</label>
+                        {{ form.payment_method }}
+                        {% if form.payment_method.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.payment_method.errors }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ form.delivery_notes.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">Примечания к доставке</label>
+                        {{ form.delivery_notes }}
+                    </div>
+                    
+                    <div class="flex items-center space-x-4">
+                        <button type="submit" class="flex-1 bg-green-500 hover:bg-green-600 text-white py-4 rounded-xl font-bold text-lg transition-colors flex items-center justify-center space-x-2">
+                            <i class="bi bi-check-circle text-xl"></i>
+                            <span>Подтвердить заказ</span>
+                        </button>
+                        <a href="{% url 'cart:cart_detail' %}" class="px-6 py-4 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-colors">
+                            <i class="bi bi-arrow-left text-xl"></i>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Информация о заказе -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
+                <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="bi bi-receipt mr-2 text-primary"></i>
+                    Ваш заказ
+                </h2>
+                
+                <div class="space-y-4 mb-6 max-h-64 overflow-y-auto">
+                    {% for item in cart.items.all %}
+                    <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                        <div>
+                            <p class="font-semibold text-gray-900 text-sm">{{ item.product.name }}</p>
+                            <p class="text-xs text-gray-600">{{ item.quantity }} x {{ item.product.price }} ₽</p>
+                        </div>
+                        <span class="font-bold text-primary">{{ item.quantity }} шт.</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <hr class="border-gray-200 mb-6">
+                
+                <div class="space-y-4 mb-6">
+                    <div class="flex justify-between text-gray-600">
+                        <span>Товаров:</span>
+                        <span class="font-semibold">{{ cart.get_total_items }} шт.</span>
+                    </div>
+                    <hr class="border-gray-200">
+                    <div class="flex justify-between">
+                        <span class="text-xl font-bold text-gray-900">Итого:</span>
+                        <span class="text-2xl font-bold text-primary">{{ cart.get_total_price }} ₽</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.querySelectorAll('input, textarea').forEach(input => {
+        input.classList.add('w-full', 'px-4', 'py-2', 'border', 'border-gray-300', 'rounded-lg', 'focus:ring-2', 'focus:ring-primary', 'focus:border-transparent', 'outline-none');
+    });
+    document.querySelectorAll('select').forEach(select => {
+        select.classList.add('w-full', 'px-4', 'py-2', 'border', 'border-gray-300', 'rounded-lg', 'focus:ring-2', 'focus:ring-primary', 'focus:border-transparent', 'outline-none');
+    });
+</script>
+{% endblock %}

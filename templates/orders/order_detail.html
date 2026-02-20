@@ -1,0 +1,171 @@
+{% extends "base/base.html" %}
+
+{% block title %}Заказ {{ order.order_number }} - ShopStore{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Хлебные крошки -->
+    <nav class="flex items-center space-x-2 text-sm text-gray-600 mb-6">
+        <a href="{% url 'shop:home' %}" class="hover:text-primary">Главная</a>
+        <i class="bi bi-chevron-right"></i>
+        <a href="{% url 'orders:order_history' %}" class="hover:text-primary">Мои заказы</a>
+        <i class="bi bi-chevron-right"></i>
+        <span class="text-gray-900">Заказ {{ order.order_number }}</span>
+    </nav>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Информация о заказе -->
+        <div class="lg:col-span-2 space-y-6">
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-primary w-12 h-12 rounded-xl flex items-center justify-center">
+                            <i class="bi bi-receipt text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-900">Заказ №{{ order.order_number }}</h1>
+                            <p class="text-gray-600">{{ order.created_at|date:"d.m.Y H:i" }}</p>
+                        </div>
+                    </div>
+                    <span class="px-4 py-2 rounded-full text-sm font-semibold
+                        {% if order.status == 'delivered' %}bg-green-100 text-green-700
+                        {% elif order.status == 'cancelled' %}bg-red-100 text-red-700
+                        {% elif order.status == 'pending' %}bg-yellow-100 text-yellow-700
+                        {% elif order.status == 'shipped' %}bg-blue-100 text-blue-700
+                        {% else %}bg-purple-100 text-purple-700{% endif %}">
+                        {{ order.get_status_display }}
+                    </span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <p class="text-sm text-gray-600 mb-1">Статус оплаты</p>
+                        <p class="font-semibold text-gray-900 flex items-center">
+                            <i class="bi bi-credit-card mr-2 text-primary"></i>
+                            {{ order.payment.get_status_display }}
+                        </p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4">
+                        <p class="text-sm text-gray-600 mb-1">Способ оплаты</p>
+                        <p class="font-semibold text-gray-900 flex items-center">
+                            <i class="bi bi-wallet2 mr-2 text-primary"></i>
+                            {{ order.payment.get_payment_method_display }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Товары в заказе -->
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="bi bi-list mr-2 text-primary"></i>
+                    Товары в заказе
+                </h2>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="text-left py-4 px-6 text-gray-600 font-semibold">Товар</th>
+                                <th class="text-left py-4 px-6 text-gray-600 font-semibold">Цена</th>
+                                <th class="text-left py-4 px-6 text-gray-600 font-semibold">Количество</th>
+                                <th class="text-left py-4 px-6 text-gray-600 font-semibold">Сумма</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order.items.all %}
+                            <tr class="border-b border-gray-100">
+                                <td class="py-4 px-6">
+                                    <div>
+                                        <p class="font-bold text-gray-900">{{ item.product_name }}</p>
+                                        {% if item.product %}
+                                            <p class="text-sm text-gray-600">Артикул: {{ item.product.id }}</p>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 text-gray-900">{{ item.price }} ₽</td>
+                                <td class="py-4 px-6 text-gray-900">{{ item.quantity }} шт.</td>
+                                <td class="py-4 px-6">
+                                    <span class="font-bold text-primary">{{ item.get_total_price }} ₽</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr class="bg-gray-50">
+                                <td colspan="3" class="py-4 px-6 text-right">
+                                    <span class="text-xl font-bold text-gray-900">Итого:</span>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <span class="text-2xl font-bold text-primary">{{ order.total_price }} ₽</span>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Информация о доставке -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
+                <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="bi bi-truck mr-2 text-primary"></i>
+                    Информация о доставке
+                </h2>
+                
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="font-bold text-gray-900 mb-3 flex items-center">
+                            <i class="bi bi-person mr-2 text-primary"></i>
+                            Получатель
+                        </h3>
+                        <div class="space-y-2 text-gray-700">
+                            <p class="font-semibold">{{ order.last_name }} {{ order.first_name }}</p>
+                            <p class="flex items-center">
+                                <i class="bi bi-telephone mr-2 text-gray-400"></i>
+                                {{ order.phone }}
+                            </p>
+                            <p class="flex items-center">
+                                <i class="bi bi-envelope mr-2 text-gray-400"></i>
+                                {{ order.email }}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <hr class="border-gray-200">
+                    
+                    <div>
+                        <h3 class="font-bold text-gray-900 mb-3 flex items-center">
+                            <i class="bi bi-geo-alt mr-2 text-primary"></i>
+                            Адрес доставки
+                        </h3>
+                        <div class="space-y-2 text-gray-700">
+                            <p>{{ order.address }}</p>
+                            <p>{{ order.city }}, {{ order.postal_code }}</p>
+                        </div>
+                    </div>
+                    
+                    {% if order.delivery_notes %}
+                    <hr class="border-gray-200">
+                    <div>
+                        <h3 class="font-bold text-gray-900 mb-3 flex items-center">
+                            <i class="bi bi-chat-quote mr-2 text-primary"></i>
+                            Примечания
+                        </h3>
+                        <p class="text-gray-600">{{ order.delivery_notes }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <hr class="border-gray-200 my-6">
+                
+                <a href="{% url 'shop:home' %}" class="block w-full bg-primary hover:bg-blue-600 text-white py-3 rounded-xl font-semibold transition-colors flex items-center justify-center space-x-2">
+                    <i class="bi bi-shop"></i>
+                    <span>Продолжить покупки</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends "base/base.html" %}
+
+{% block title %}Корзина - ShopStore{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex items-center space-x-3 mb-8">
+        <div class="bg-primary w-12 h-12 rounded-xl flex items-center justify-center">
+            <i class="bi bi-cart3 text-white text-xl"></i>
+        </div>
+        <h1 class="text-3xl font-bold text-gray-900">Корзина</h1>
+    </div>
+    
+    {% if cart and cart.items.exists %}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Товары в корзине -->
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="text-left py-4 px-6 text-gray-600 font-semibold">Товар</th>
+                                <th class="text-left py-4 px-6 text-gray-600 font-semibold">Цена</th>
+                                <th class="text-left py-4 px-6 text-gray-600 font-semibold">Количество</th>
+                                <th class="text-left py-4 px-6 text-gray-600 font-semibold">Сумма</th>
+                                <th class="text-left py-4 px-6 text-gray-600 font-semibold"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart.items.all %}
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center space-x-4">
+                                        {% if item.product.images.first %}
+                                            <img src="{{ item.product.images.first.image.url }}" alt="{{ item.product.name }}" class="w-16 h-16 object-cover rounded-lg">
+                                        {% else %}
+                                            <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                                                <i class="bi bi-image text-gray-400"></i>
+                                            </div>
+                                        {% endif %}
+                                        <div>
+                                            <a href="{% url 'shop:product_detail' item.product.slug %}" class="font-bold text-gray-900 hover:text-primary">
+                                                {{ item.product.name }}
+                                            </a>
+                                            <p class="text-sm text-gray-600">{{ item.product.category.name }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 text-gray-900 font-semibold">{{ item.product.price }} ₽</td>
+                                <td class="py-4 px-6">
+                                    <form method="POST" action="{% url 'cart:cart_update' item.id %}" class="flex items-center space-x-2">
+                                        {% csrf_token %}
+                                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                                        <button type="submit" class="text-primary hover:text-blue-600">
+                                            <i class="bi bi-arrow-clockwise text-xl"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <span class="font-bold text-primary text-lg">{{ item.get_total_price }} ₽</span>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <a href="{% url 'cart:cart_remove' item.id %}" class="text-red-500 hover:text-red-600" onclick="return confirm('Удалить товар из корзины?')">
+                                        <i class="bi bi-trash text-xl"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="bg-gray-50 px-6 py-4 flex items-center justify-between">
+                    <a href="{% url 'shop:home' %}" class="flex items-center space-x-2 text-gray-700 hover:text-primary">
+                        <i class="bi bi-arrow-left"></i>
+                        <span>Продолжить покупки</span>
+                    </a>
+                    <a href="{% url 'cart:cart_clear' %}" class="flex items-center space-x-2 text-red-500 hover:text-red-600" onclick="return confirm('Очистить корзину?')">
+                        <i class="bi bi-trash"></i>
+                        <span>Очистить корзину</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Итого -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
+                <h2 class="text-xl font-bold text-gray-900 mb-6">Итого</h2>
+                
+                <div class="space-y-4 mb-6">
+                    <div class="flex justify-between text-gray-600">
+                        <span>Товаров:</span>
+                        <span class="font-semibold">{{ cart.get_total_items }} шт.</span>
+                    </div>
+                    <hr class="border-gray-200">
+                    <div class="flex justify-between">
+                        <span class="text-xl font-bold text-gray-900">Общая сумма:</span>
+                        <span class="text-2xl font-bold text-primary">{{ cart.get_total_price }} ₽</span>
+                    </div>
+                </div>
+                
+                <a href="{% url 'orders:order_create' %}" class="block w-full gradient-bg text-white py-4 rounded-xl font-bold text-lg hover:opacity-90 transition-opacity flex items-center justify-center space-x-2">
+                    <i class="bi bi-check-circle text-xl"></i>
+                    <span>Оформить заказ</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="bg-white rounded-2xl shadow-lg p-12 text-center">
+        <div class="bg-gray-100 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="bi bi-cart-x text-gray-400 text-4xl"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Ваша корзина пуста</h2>
+        <p class="text-gray-600 mb-6">Добавьте товары из каталога, чтобы оформить заказ</p>
+        <a href="{% url 'shop:home' %}" class="inline-flex items-center space-x-2 bg-primary hover:bg-blue-600 text-white px-8 py-3 rounded-xl font-bold transition-colors">
+            <i class="bi bi-shop text-xl"></i>
+            <span>Перейти в каталог</span>
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

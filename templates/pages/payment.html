@@ -1,0 +1,190 @@
+{% extends "base/base.html" %}
+
+{% block title %}Оплата - ShopStore{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Заголовок -->
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Способы оплаты</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Выберите удобный для вас способ оплаты заказа
+        </p>
+    </div>
+    
+    <!-- Способы оплаты -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <!-- Наличные -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 text-center">
+            <div class="bg-green-100 w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center">
+                <i class="bi bi-cash text-green-600 text-4xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Наличными при получении</h2>
+            
+            <div class="space-y-3 text-left">
+                <div class="flex items-center space-x-2">
+                    <i class="bi bi-check-circle text-green-500"></i>
+                    <span class="text-gray-600">Оплата курьеру при доставке</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="bi bi-check-circle text-green-500"></i>
+                    <span class="text-gray-600">Оплата в пункте самовывоза</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="bi bi-check-circle text-green-500"></i>
+                    <span class="text-gray-600">Без комиссии</span>
+                </div>
+            </div>
+            
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <p class="text-sm text-gray-500">Подходит для заказов до 100 000 ₽</p>
+            </div>
+        </div>
+        
+        <!-- Карта -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 text-center">
+            <div class="bg-blue-100 w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center">
+                <i class="bi bi-credit-card text-blue-600 text-4xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Банковской картой</h2>
+            
+            <div class="space-y-3 text-left">
+                <div class="flex items-center space-x-2">
+                    <i class="bi bi-check-circle text-green-500"></i>
+                    <span class="text-gray-600">Visa, MasterCard, МИР</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="bi bi-check-circle text-green-500"></i>
+                    <span class="text-gray-600">При получении заказа</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="bi bi-check-circle text-green-500"></i>
+                    <span class="text-gray-600">Безопасная обработка</span>
+                </div>
+            </div>
+            
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <p class="text-sm text-gray-500">Комиссия 0%</p>
+            </div>
+        </div>
+        
+        <!-- Онлайн -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 text-center">
+            <div class="bg-purple-100 w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center">
+                <i class="bi bi-wallet2 text-purple-600 text-4xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Онлайн оплата</h2>
+            
+            <div class="space-y-3 text-left">
+                <div class="flex items-center space-x-2">
+                    <i class="bi bi-check-circle text-green-500"></i>
+                    <span class="text-gray-600">Банковские карты</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="bi bi-check-circle text-green-500"></i>
+                    <span class="text-gray-600">СБП (Система быстрых платежей)</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="bi bi-check-circle text-green-500"></i>
+                    <span class="text-gray-600">Apple Pay, Google Pay</span>
+                </div>
+            </div>
+            
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <p class="text-sm text-gray-500">Мгновенная обработка</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Безопасность -->
+    <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+        <div class="flex items-center space-x-3 mb-6">
+            <div class="bg-green-500 w-12 h-12 rounded-xl flex items-center justify-center">
+                <i class="bi bi-shield-check text-white text-xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900">Безопасность платежей</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="flex items-start space-x-3">
+                <div class="bg-green-100 w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="bi bi-lock text-green-600"></i>
+                </div>
+                <div>
+                    <p class="font-semibold text-gray-900">Защищенное соединение</p>
+                    <p class="text-gray-600 text-sm">Все транзакции защищены протоколом SSL</p>
+                </div>
+            </div>
+            
+            <div class="flex items-start space-x-3">
+                <div class="bg-green-100 w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="bi bi-patch-check text-green-600"></i>
+                </div>
+                <div>
+                    <p class="font-semibold text-gray-900">PCI DSS compliant</p>
+                    <p class="text-gray-600 text-sm">Соответствие международным стандартам безопасности</p>
+                </div>
+            </div>
+            
+            <div class="flex items-start space-x-3">
+                <div class="bg-green-100 w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="bi bi-eye-slash text-green-600"></i>
+                </div>
+                <div>
+                    <p class="font-semibold text-gray-900">Конфиденциальность</p>
+                    <p class="text-gray-600 text-sm">Данные карт не хранятся на наших серверах</p>
+                </div>
+            </div>
+            
+            <div class="flex items-start space-x-3">
+                <div class="bg-green-100 w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="bi bi-arrow-counterclockwise text-green-600"></i>
+                </div>
+                <div>
+                    <p class="font-semibold text-gray-900">Возврат средств</p>
+                    <p class="text-gray-600 text-sm">Возможен в случае отмены заказа</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Дополнительная информация -->
+    <div class="bg-gradient-to-r from-primary to-accent rounded-2xl shadow-lg p-8 text-white">
+        <h2 class="text-2xl font-bold mb-6">Дополнительная информация</h2>
+        
+        <div class="space-y-4">
+            <div class="flex items-start space-x-3">
+                <i class="bi bi-info-circle text-2xl mt-1"></i>
+                <div>
+                    <p class="font-semibold">Чек об оплате</p>
+                    <p class="text-white/80">Электронный чек будет отправлен на ваш email после успешной оплаты</p>
+                </div>
+            </div>
+            
+            <div class="flex items-start space-x-3">
+                <i class="bi bi-info-circle text-2xl mt-1"></i>
+                <div>
+                    <p class="font-semibold">Проверка платежа</p>
+                    <p class="text-white/80">Обычно занимает от нескольких секунд до 5 минут</p>
+                </div>
+            </div>
+            
+            <div class="flex items-start space-x-3">
+                <i class="bi bi-info-circle text-2xl mt-1"></i>
+                <div>
+                    <p class="font-semibold">Подтверждение заказа</p>
+                    <p class="text-white/80">После успешной оплаты заказ перейдет в статус "Подтвержден"</p>
+                </div>
+            </div>
+            
+            <div class="flex items-start space-x-3">
+                <i class="bi bi-info-circle text-2xl mt-1"></i>
+                <div>
+                    <p class="font-semibold">Проблемы с оплатой</p>
+                    <p class="text-white/80">При возникновении проблем свяжитесь с нашей службой поддержки</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
